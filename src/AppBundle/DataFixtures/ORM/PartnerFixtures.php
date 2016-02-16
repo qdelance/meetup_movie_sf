@@ -6,8 +6,6 @@ use AppBundle\Entity\Partner;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use AppBundle\Entity\Level;
-
 
 class PartnerFixtures extends AbstractFixture implements OrderedFixtureInterface
 {
@@ -17,7 +15,7 @@ class PartnerFixtures extends AbstractFixture implements OrderedFixtureInterface
 
         $p1 = new Partner();
         $p1->setName('Silver Partner');
-        $p1->setAddress('Address 1\nLong line\nOne more line');
+        $p1->setAddress("Address 1\nLong line\nOne more line");
         // Somewhat ugly but ...
         $p1->setLevel($this->getReference('level-Silver'));
 
@@ -25,7 +23,7 @@ class PartnerFixtures extends AbstractFixture implements OrderedFixtureInterface
 
         $p2 = new Partner();
         $p2->setName('Very Good Partner');
-        $p2->setAddress('Address 2\nLong line\nOne more line');
+        $p2->setAddress("Address 2\nLong line\nOne more line");
         // Somewhat ugly but ...
         $p2->setLevel($this->getReference('level-Gold'));
 
@@ -33,7 +31,7 @@ class PartnerFixtures extends AbstractFixture implements OrderedFixtureInterface
 
         $p3 = new Partner();
         $p3->setName('One More Partner');
-        $p3->setAddress('Lorem ipsum...');
+        $p3->setAddress("Lorem ipsum...");
 
         $manager->persist($p3);
 

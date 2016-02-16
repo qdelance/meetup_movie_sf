@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h1>Levels</h1>
+
+    {% for level in levels %}
+
+    <p>{{ level.name }}</p>
+
+    {% else %}
+        No level
+    {% endfor %}
+
+{% endblock %}
+
+{% block stylesheets %}
+<style>
+
+</style>
+{% endblock %}
