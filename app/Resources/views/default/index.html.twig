@@ -12,13 +12,14 @@
                     <th>Name</th>
                     <th>Level</th>
                     <th>Address</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
             {% for partner in partners %}
                 <tr>
                     <td>
-                        {{ partner.name }}
+                        <a href="{{ path('partner_view', {'id': partner.id}) }}">{{ partner.name }}</a>
                     </td>
                     <td>
                         {% if partner.level is not null %}
@@ -27,6 +28,17 @@
                     </td>
                     <td>
                         {{ partner.address | nl2br }}
+                    </td>
+                    <td>
+                        <a href="{{ path('partner_edit', {'id': partner.id}) }}" class="btn btn-default">
+                            <i class="glyphicon glyphicon-edit"></i>
+                            Edit
+                        </a>
+
+                        <a href="{{ path('partner_delete', {'id': partner.id}) }}" class="btn btn-danger">
+                            <i class="glyphicon glyphicon-trash"></i>
+                            Delete
+                        </a>
                     </td>
                 </tr>
             {% endfor %}

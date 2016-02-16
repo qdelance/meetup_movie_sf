@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h1>Partner View</h1>
+
+    {% if partner %}
+        <h2>{{ partner.name }}</h2>
+
+        <p>Id: {{ partner.id }}</p>
+
+        {% if partner.level is not null %}
+        <p>Level: {{ partner.level.name }}</p>
+        {%  endif %}
+
+        <p>Address :
+            <div class="well">{{ partner.address }}</div>
+        </p>
+
+        <p>
+            <a href="{{ path('partner_list') }}" class="btn btn-default">
+                <i class="glyphicon glyphicon-chevron-left"></i>
+                Back Home
+            </a>
+
+            <a href="{{ path('partner_edit', {'id': partner.id}) }}" class="btn btn-default">
+                <i class="glyphicon glyphicon-edit"></i>
+                Edit
+            </a>
+
+            <a href="{{ path('partner_delete', {'id': partner.id}) }}" class="btn btn-danger">
+                <i class="glyphicon glyphicon-trash"></i>
+                Delete
+            </a>
+        </p>
+
+    {% else %}
+        No partner
+    {% endif %}
+
+
+
+{% endblock %}
+
+{% block stylesheets %}
+<style>
+
+</style>
+{% endblock %}

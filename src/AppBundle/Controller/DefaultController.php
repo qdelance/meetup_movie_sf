@@ -37,7 +37,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/partners")
+     * @Route("/partners", name="partner_list")
      * @Method("GET")
      */
     public function partnersAction(Request $request)
@@ -49,5 +49,60 @@ class DefaultController extends Controller
         $partners = $repository->findAll();
 
         return $this->render('default/index.html.twig', array('partners' => $partners));
+    }
+
+    /**
+     * @Route("/partners/{id}", name="partner_view")
+     * @Method("GET")
+     */
+    public function partnerViewAction(Request $request, $id)
+    {
+        $repository = $this
+            ->getDoctrine()
+            ->getRepository('AppBundle:Partner');
+
+        $partner = $repository->find($id);
+
+        if ($partner === null) {
+            throw $this->createNotFoundException('No partner found for id ' . $id);
+        }
+
+        return $this->render('default/partner.html.twig', array('partner' => $partner));
+    }
+
+    /**
+     * @Route("/partners/{id}/delete", name="partner_delete")
+     */
+    public function partnerDeleteAction(Request $request, $id)
+    {
+        $repository = $this
+            ->getDoctrine()
+            ->getRepository('AppBundle:Partner');
+
+        $partner = $repository->find($id);
+
+        if ($partner === null) {
+            throw $this->createNotFoundException('No partner found for id ' . $id);
+        }
+
+        return $this->render('default/partner.html.twig', array('partner' => $partner));
+    }
+
+    /**
+     * @Route("/partners/{id}/edit", name="partner_edit")
+     */
+    public function partnerEditAction(Request $request, $id)
+    {
+        $repository = $this
+            ->getDoctrine()
+            ->getRepository('AppBundle:Partner');
+
+        $partner = $repository->find($id);
+
+        if ($partner === null) {
+            throw $this->createNotFoundException('No partner found for id ' . $id);
+        }
+
+        return $this->render('default/partner.html.twig', array('partner' => $partner));
     }
 }
