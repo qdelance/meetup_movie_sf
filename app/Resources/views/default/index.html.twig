@@ -21,7 +21,7 @@
                         {{ partner.name }}
                     </td>
                     <td>
-                        {% if level.partner is defined %}
+                        {% if partner.level is not null %}
                         {{ partner.level.name }}
                         {% endif %}
                     </td>

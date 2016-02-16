@@ -40,7 +40,7 @@ class DefaultController extends Controller
      * @Route("/partners")
      * @Method("GET")
      */
-    public function partnerssAction(Request $request)
+    public function partnersAction(Request $request)
     {
         $repository = $this
             ->getDoctrine()
