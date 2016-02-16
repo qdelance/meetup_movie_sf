@@ -53,6 +53,15 @@ No need to create a bundle (use default AppBundle).
     php bin/console doctrine:schema:update --dump-sql
     php bin/console doctrine:schema:update --force
     
+Before adding links between entities manually, add support for migrations:    
+    
+    composer require doctrine/doctrine-migrations-bundle "^1.0"
+    
+Add link between Partner <=> Level in source
+    
+    php app/console doctrine:migrations:diff
+    php app/console doctrine:migrations:migrate
+    
 Creating content
 ----------------
 
