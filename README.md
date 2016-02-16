@@ -57,7 +57,13 @@ Before adding links between entities manually, add support for migrations:
     
     composer require doctrine/doctrine-migrations-bundle "^1.0"
     
+Register bundle ;)    
+    
 Add link between Partner <=> Level in source
+
+    php bin/console doctrine:generate:entities AppBundle/Entity/Partner
+    
+Apply in DB
     
     php app/console doctrine:migrations:diff
     php app/console doctrine:migrations:migrate
@@ -65,4 +71,15 @@ Add link between Partner <=> Level in source
 Creating content
 ----------------
 
-TODO
+Adding support for fixtures
+
+    composer require --dev doctrine/doctrine-fixtures-bundle
+    
+Register bundle ;)    
+    
+Loading sample data
+
+    php bin/console doctrine:fixtures:load
+
+Viewing content
+----------------

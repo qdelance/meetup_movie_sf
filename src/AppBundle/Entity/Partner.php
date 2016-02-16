@@ -37,6 +37,11 @@ class Partner
 
 
     /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Level")
+     */
+    private $level;
+
+    /**
      * Get id
      *
      * @return int
@@ -93,5 +98,28 @@ class Partner
     {
         return $this->address;
     }
-}
 
+    /**
+     * Set level
+     *
+     * @param \AppBundle\Entity\Level $level
+     *
+     * @return Partner
+     */
+    public function setLevel(\AppBundle\Entity\Level $level = null)
+    {
+        $this->level = $level;
+
+        return $this;
+    }
+
+    /**
+     * Get level
+     *
+     * @return \AppBundle\Entity\Level
+     */
+    public function getLevel()
+    {
+        return $this->level;
+    }
+}
