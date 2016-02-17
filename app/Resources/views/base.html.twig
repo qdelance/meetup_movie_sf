@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Meetup Sample App{% endblock %}</title>
+        <title>{% block htitle %}Meetup Sample App{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
 
         <!-- Latest compiled and minified CSS -->
@@ -14,6 +14,32 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
+
+        <h1>{% block title %}{% endblock %}</h1>
+
+        {# Global display of flash messages to avoid doing it in every template #}
+        {% for flashMessage in app.session.flashbag.get('error') %}
+            <div class="alert alert-danger">
+                {{ flashMessage }}
+            </div>
+        {% endfor %}
+        {% for flashMessage in app.session.flashbag.get('warning') %}
+            <div class="alert alert-warning">
+                {{ flashMessage }}
+            </div>
+        {% endfor %}
+        {% for flashMessage in app.session.flashbag.get('success') %}
+            <div class="alert alert-success">
+                {{ flashMessage }}
+            </div>
+        {% endfor %}
+        {% for flashMessage in app.session.flashbag.get('info') %}
+            <div class="alert alert-info">
+                {{ flashMessage }}
+            </div>
+        {% endfor %}
+        <!-- end flash -->
+
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
 

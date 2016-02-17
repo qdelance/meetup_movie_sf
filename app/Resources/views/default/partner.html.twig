@@ -1,20 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
+{% block title %}Partner View{% endblock %}
 
-    <h1>Partner View</h1>
+{% block body %}
 
     {% if partner %}
         <h2>{{ partner.name }}</h2>
 
-        <p>Id: {{ partner.id }}</p>
+        <p><strong>Id: </strong>{{ partner.id }}</p>
 
         {% if partner.level is not null %}
-        <p>Level: {{ partner.level.name }}</p>
+        <p><strong>Level: </strong>{{ partner.level.name }}</p>
         {%  endif %}
 
-        <p>Address :
-            <div class="well">{{ partner.address }}</div>
+        <p><strong>Address : </strong><br>
+            {{ partner.address|nl2br }}
         </p>
 
         <p>
@@ -35,10 +35,10 @@
         </p>
 
     {% else %}
-        No partner
+
+        <p>No partner</p>
+
     {% endif %}
-
-
 
 {% endblock %}
 

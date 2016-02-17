@@ -1,8 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
+{% block title %}Welcome on Meetup Sample App{% endblock %}
 
-    <h1>Welcome on Meetup Sample App</h1>
+{% block body %}
 
     {% if partners %}
         <table class="table">
@@ -46,8 +46,12 @@
         </table>
 
     {% else %}
-        No partner
+
+        <p>No partner</p>
+
     {% endif %}
+
+    <a href="{{ path('partner_add') }}" class="btn btn-default">Add Partner</a>
 
 {% endblock %}
 
