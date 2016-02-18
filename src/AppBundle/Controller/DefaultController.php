@@ -2,7 +2,9 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Movie;
 use AppBundle\Entity\Partner;
+use AppBundle\Form\MovieType;
 use AppBundle\Form\PartnerType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -153,4 +155,119 @@ class DefaultController extends Controller
         return $this->render('default/partner_edit.html.twig', array('form' => $form->createView()));
 
     }
+
+    /**
+     * @Route("/movies", name="movie_list")
+     * @Method("GET")
+     */
+    public function moviesAction(Request $request)
+    {
+        $repository = $this
+            ->getDoctrine()
+            ->getRepository('AppBundle:Movie');
+
+        $movies = $repository->findAll();
+
+        return $this->render('movie/movie_list.html.twig', array('movies' => $movies));
+    }
+
+    /**
+     * @Route("/movies/{id}", name="movie_view")
+     * @Method("GET")
+     */
+    public function movieViewAction(Request $request, $id)
+    {
+        $repository = $this
+            ->getDoctrine()
+            ->getRepository('AppBundle:Movie');
+
+        $movie = $repository->find($id);
+
+        if ($movie === null) {
+            throw $this->createNotFoundException('No movie found for id ' . $id);
+        }
+
+        return $this->render('movie/movie_view.html.twig', array('movie' => $movie));
+    }
+
+    /**
+     * @Route("/movie/{id}/delete", name="movie_delete")
+     */
+    public function movieDeleteAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $movie = $em->getRepository('AppBundle:Movie')->find($id);
+        if (null === $movie) {
+            throw new NotFoundHttpException('No movie for id ' . $id);
+        }
+        $form = $this->createFormBuilder()->getForm();
+        if ($form->handleRequest($request)->isValid()) {
+            $em->remove($movie);
+            $em->flush();
+            $this->addFlash('info', 'Movie deleted');
+
+            return $this->redirect($this->generateUrl('movie_list'));
+        }
+
+        // confirm page
+        return $this->render('movie/movie_delete.html.twig', array('form' => $form->createView(), 'movie' => $movie));
+    }
+
+    /**
+     * @Route("/movie/{id}/edit", name="movie_edit")
+     */
+    public function movieEditAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $movie = $em
+            ->getRepository('AppBundle:Movie')
+            ->find($id);
+
+        if (null === $movie) {
+            throw new NotFoundHttpException('No movie for id ' . $id);
+        }
+
+        $form = $this->createForm(MovieType::class, $movie);
+        // $form = $this->get('form.factory')->create(new AdvertType, $advert);
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($movie);
+            $em->flush();
+
+            $this->addFlash('info', 'Movie saved');
+
+            return $this->redirect($this->generateUrl('movie_view', array('id' => $movie->getId())));
+        }
+
+        return $this->render('movie/movie_edit.html.twig', array('form' => $form->createView(), 'movie' => $movie));
+    }
+
+    /**
+     * @Route("/movie/add", name="movie_add")
+     */
+    public function movieAddAction(Request $request)
+    {
+        $movie = new Movie();
+
+        $form = $this->createForm(MovieType::class, $movie);
+        // $form = $this->get('form.factory')->create(new AdvertType(), $advert);
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($movie);
+            $em->flush();
+
+            $this->addFlash('info', 'Movie added');
+
+            return $this->redirect($this->generateUrl('movie_view', array('id' => $movie->getId())));
+        }
+
+        return $this->render('movie/movie_edit.html.twig', array('form' => $form->createView()));
+
+    }    
 }
