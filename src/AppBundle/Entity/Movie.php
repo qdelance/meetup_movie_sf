@@ -58,12 +58,12 @@ class Movie
     private $rating;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Type", cascade={"remove", "persist"})
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Type", cascade={"persist"})
      */
     private $type;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Genre", mappedBy="", cascade={"remove", "persist"})
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Genre", mappedBy="", cascade={"persist"})
      */
     private $genres;
 
