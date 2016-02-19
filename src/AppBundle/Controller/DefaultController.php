@@ -39,6 +39,26 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/movie/best-results/{limit}", name="movie_delete")
+     */
+    public function bestRatedAction(Request $request, $limit)
+    {
+        $movies = $this->getDoctrine()->getManager()->getRepository('AppBundle:Movie')->findBy(
+            array(),
+            array('rating' => 'desc'),
+            $limit,
+            0
+        );
+
+        return $this->render(
+            'movie/best-rated.html.twig',
+            array(
+                'movies' => $movies
+            )
+        );
+    }
+
+    /**
      * @Route("/movies/{page}",
      *     defaults={"page" = 1},
      *     name="movie_list",

@@ -1,0 +1,3 @@
+{% for movie in movies %}
+    <p><a href="{{ path('movie_view', {id: movie.id}) }}">{{ movie.title }}</a> - {{ movie.rating }}</p>
+{% endfor %}

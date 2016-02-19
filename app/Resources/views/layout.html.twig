@@ -17,7 +17,7 @@
 
     <div class="container">
         <div id="header" class="jumbotron">
-            <h1>A Sample Application Based on Symfony Framwork</h1>
+            <h1>A Sample Application Based on Symfony Framework</h1>
             <p>
                 This is a sample application written for a PHP meetup in Toulouse :)
             </p>
@@ -45,11 +45,9 @@
                     <a href="{{ path('fos_user_security_login') }}">Connexion</a>
                 {% endif %}
 
-
-                <h3>Best Rated Movies</h3>
-                {{ render(controller("AppBundle::bestRated", {'limit': 3})) }}
-
             #}
+                <h3>Best Rated Movies</h3>
+                {{ render(controller("AppBundle:Default:bestRated", {'limit': 8})) }}
 
             </div>
             <div id="content" class="col-md-9">
