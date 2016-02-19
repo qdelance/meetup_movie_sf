@@ -5,6 +5,9 @@
 {% block body %}
 
     {% if movies %}
+
+        {% include 'default/pagination.html.twig' with {'route': 'movie_list', 'page': page, 'nbPages': nbPages} %}
+
         <table class="table">
 
             <thead>
@@ -64,6 +67,8 @@
             {% endfor %}
             </tbody>
         </table>
+
+        {% include 'default/pagination.html.twig' with {'route': 'movie_list', 'page': page, 'nbPages': nbPages} %}
 
     {% else %}
 

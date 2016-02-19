@@ -13,6 +13,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+// FIXME Should become a per page parameter one day with a dedicated select
+define('NB_PER_PAGE', 25);
+
 class DefaultController extends Controller
 {
     /**
@@ -157,18 +160,20 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/movies", name="movie_list")
+     * @Route("/movies/{page}", name="movie_list")
      * @Method("GET")
      */
-    public function moviesAction(Request $request)
+    public function moviesAction(Request $request, $page)
     {
         $repository = $this
             ->getDoctrine()
             ->getRepository('AppBundle:Movie');
 
-        $movies = $repository->findAll();
+        $movies = $repository->getAll(array(), $page, NB_PER_PAGE);
 
-        return $this->render('movie/movie_list.html.twig', array('movies' => $movies));
+        $nbPages = ceil(count($movies) / NB_PER_PAGE);
+
+        return $this->render('movie/movie_list.html.twig', array('movies' => $movies, 'page' => $page, 'nbPages' => $nbPages));
     }
 
     /**

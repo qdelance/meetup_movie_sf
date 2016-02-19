@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Repository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * MovieRepository
@@ -10,4 +11,38 @@ namespace AppBundle\Repository;
  */
 class MovieRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    public function getAll($filters, $page, $nbPerPage)
+    {
+        $qb = $this->createQueryBuilder('m')
+            ->join('m.type', 'type')
+            ->addSelect('type')
+            ->join('m.genres', 'genres')
+            ->addSelect('genres')
+            ->orderBy('m.title', 'ASC');
+
+        if ($filters != null) {
+            if (array_key_exists('title', $filters) && $filters['title'] != '') {
+                $qb->andWhere('m.title like :title')
+                    ->setParameter('title', '%'.$filters['title'].'%');
+            }
+
+            if (array_key_exists('genre', $filters) && $filters['genre'] !== '' && $filters['genre'] !== NULL) {
+                $qb->andWhere('m.genre = :genre')
+                    ->setParameter('genre', $filters['genre']);
+            }
+
+            if (array_key_exists('type', $filters) && $filters['type'] !== '' && $filters['type'] !== NULL) {
+                $qb->andWhere('m.type = :type')
+                    ->setParameter('type', $filters['type']);
+            }
+        }
+
+        // LIMIT and OFFSET management => pagination
+        $qb->setFirstResult(($page - 1) * $nbPerPage)
+            ->setMaxResults($nbPerPage);
+
+        return new Paginator($qb->getQuery(), true);
+    }
+
 }
