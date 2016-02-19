@@ -2,7 +2,9 @@
 
 namespace AppBundle\Command;
 
+use AppBundle\Entity\Genre;
 use AppBundle\Entity\Movie;
+use AppBundle\Entity\Type;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
@@ -74,6 +76,27 @@ class ImportCommand extends ContainerAwareCommand
             // Updating info
             $movie->setYear($row[11]);
             $movie->setRating($row[9]);
+
+            $type = $em->getRepository('AppBundle:Type')
+                ->findOneBy(array('name' => $row[6]));
+            if(!is_object($type)){
+                $type = new Type();
+                $type->setName($row[6]);
+            }
+            $movie->setType($type);
+
+
+            $genres = explode(', ', $row[12]);
+            $movie->getGenres()->clear();
+            foreach($genres as $genre) {
+                $g = $em->getRepository('AppBundle:Genre')
+                    ->findOneBy(array('name' => $genre));
+                if (!is_object($g)) {
+                    $g = new Genre();
+                    $g->setName($genre);
+                }
+                $movie->getGenres()->add($g);
+            }
 
             // TODO handle other fields here
 
