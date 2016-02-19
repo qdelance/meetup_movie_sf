@@ -31,6 +31,14 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/contact", name="core_contact")
+     */
+    public function contactAction(Request $request)
+    {
+        return new Response('Empty blank page');
+    }
+
+    /**
      * @Route("/movies/{page}",
      *     defaults={"page" = 1},
      *     name="movie_list",
@@ -53,7 +61,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/movie/{id}", name="movie_view")
+     * @Route("/movie/{id}/view", name="movie_view")
      * @Method("GET")
      */
     public function movieViewAction(Request $request, $id)

@@ -1,10 +1,12 @@
-{% extends 'base.html.twig' %}
+{% extends 'movie/movie.html.twig' %}
 
-{% block title %}Movie Edit{% endblock %}
+{% block title %}{{ parent() }} - Edit{% endblock %}
 
 {% block body %}
 
     <div class="well">
+
+    {% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
 
     {{ form(form) }}
 
