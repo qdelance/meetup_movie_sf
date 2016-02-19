@@ -82,6 +82,8 @@ class ImportCommand extends ContainerAwareCommand
             if(!is_object($type)){
                 $type = new Type();
                 $type->setName($row[6]);
+                $em->persist($type);
+                $em->flush();
             }
             $movie->setType($type);
 
@@ -94,13 +96,15 @@ class ImportCommand extends ContainerAwareCommand
                 if (!is_object($g)) {
                     $g = new Genre();
                     $g->setName($genre);
+                    $em->persist($g);
+                    $em->flush(); // Important: without flush, object not written in DB, so not found with findOneBy, and we endup with duplicates
                 }
                 $movie->getGenres()->add($g);
             }
 
             // TODO handle other fields here
 
-            // Persisting the current user
+            // Persisting the current object
             $em->persist($movie);
 
             // Each 20 objects persisted we flush everything
@@ -115,7 +119,6 @@ class ImportCommand extends ContainerAwareCommand
 
                 $now = new \DateTime();
                 $output->writeln(' of objects imported ... | ' . $now->format('d-m-Y G:i:s'));
-
             }
 
             $i++;
