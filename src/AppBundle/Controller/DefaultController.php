@@ -160,7 +160,12 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/movies/{page}", name="movie_list")
+     * @Route("/movies/{page}",
+     *     defaults={"page" = 1},
+     *     name="movie_list",
+     *     requirements={
+     *     "page": "\d+"
+     * })
      * @Method("GET")
      */
     public function moviesAction(Request $request, $page)
@@ -177,7 +182,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/movies/{id}", name="movie_view")
+     * @Route("/movie/{id}", name="movie_view")
      * @Method("GET")
      */
     public function movieViewAction(Request $request, $id)
