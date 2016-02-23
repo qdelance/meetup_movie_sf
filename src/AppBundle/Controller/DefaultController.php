@@ -53,7 +53,7 @@ class DefaultController extends Controller
         return $this->render(
             'movie/best-rated.html.twig',
             array(
-                'movies' => $movies
+                'movies' => $movies,
             )
         );
     }
@@ -77,7 +77,10 @@ class DefaultController extends Controller
 
         $nbPages = ceil(count($movies) / NB_PER_PAGE);
 
-        return $this->render('movie/movie_list.html.twig', array('movies' => $movies, 'page' => $page, 'nbPages' => $nbPages));
+        return $this->render(
+            'movie/movie_list.html.twig',
+            array('movies' => $movies, 'page' => $page, 'nbPages' => $nbPages)
+        );
     }
 
     /**
@@ -93,7 +96,7 @@ class DefaultController extends Controller
         $movie = $repository->find($id);
 
         if ($movie === null) {
-            throw $this->createNotFoundException('No movie found for id ' . $id);
+            throw $this->createNotFoundException('No movie found for id '.$id);
         }
 
         return $this->render('movie/movie_view.html.twig', array('movie' => $movie));
@@ -107,7 +110,7 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         $movie = $em->getRepository('AppBundle:Movie')->find($id);
         if (null === $movie) {
-            throw new NotFoundHttpException('No movie for id ' . $id);
+            throw new NotFoundHttpException('No movie for id '.$id);
         }
         $form = $this->createFormBuilder()->getForm();
         if ($form->handleRequest($request)->isValid()) {
@@ -133,7 +136,7 @@ class DefaultController extends Controller
             ->find($id);
 
         if (null === $movie) {
-            throw new NotFoundHttpException('No movie for id ' . $id);
+            throw new NotFoundHttpException('No movie for id '.$id);
         }
 
         $form = $this->createForm(MovieType::class, $movie);
@@ -178,5 +181,5 @@ class DefaultController extends Controller
 
         return $this->render('movie/movie_edit.html.twig', array('form' => $form->createView()));
 
-    }    
+    }
 }

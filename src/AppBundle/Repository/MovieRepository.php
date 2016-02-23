@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Repository;
+
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
@@ -27,12 +28,12 @@ class MovieRepository extends \Doctrine\ORM\EntityRepository
                     ->setParameter('title', '%'.$filters['title'].'%');
             }
 
-            if (array_key_exists('genre', $filters) && $filters['genre'] !== '' && $filters['genre'] !== NULL) {
+            if (array_key_exists('genre', $filters) && $filters['genre'] !== '' && $filters['genre'] !== null) {
                 $qb->andWhere('m.genre = :genre')
                     ->setParameter('genre', $filters['genre']);
             }
 
-            if (array_key_exists('type', $filters) && $filters['type'] !== '' && $filters['type'] !== NULL) {
+            if (array_key_exists('type', $filters) && $filters['type'] !== '' && $filters['type'] !== null) {
                 $qb->andWhere('m.type = :type')
                     ->setParameter('type', $filters['type']);
             }

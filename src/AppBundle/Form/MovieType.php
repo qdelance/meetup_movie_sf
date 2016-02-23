@@ -18,16 +18,24 @@ class MovieType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('type', EntityType::class, array(
-                'class'    => 'AppBundle:Type',
-                'choice_label' => 'name',
-                'multiple' => false
-            ))
-            ->add('genres', EntityType::class, array(
-                'class'    => 'AppBundle:Genre',
-                'choice_label' => 'name',
-                'multiple' => true
-            ))
+            ->add(
+                'type',
+                EntityType::class,
+                array(
+                    'class' => 'AppBundle:Type',
+                    'choice_label' => 'name',
+                    'multiple' => false,
+                )
+            )
+            ->add(
+                'genres',
+                EntityType::class,
+                array(
+                    'class' => 'AppBundle:Genre',
+                    'choice_label' => 'name',
+                    'multiple' => true,
+                )
+            )
             ->add('year')
             ->add('releaseDate')
             ->add('rating')
@@ -39,9 +47,11 @@ class MovieType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Movie'
-        ));
+        $resolver->setDefaults(
+            array(
+                'data_class' => 'AppBundle\Entity\Movie',
+            )
+        );
     }
 
     /**

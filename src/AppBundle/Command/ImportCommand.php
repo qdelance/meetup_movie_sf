@@ -23,22 +23,21 @@ class ImportCommand extends ContainerAwareCommand
                 'filename',
                 InputArgument::REQUIRED,
                 'CSV file to import?'
-            )
-        ;
+            );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // Showing when the script is launched
         $now = new \DateTime();
-        $output->writeln('<comment>Start : ' . $now->format('d-m-Y G:i:s') . ' ---</comment>');
+        $output->writeln('<comment>Start : '.$now->format('d-m-Y G:i:s').' ---</comment>');
 
         // Importing CSV on DB via Doctrine ORM
         $this->import($input, $output);
 
         // Showing when the script is over
         $now = new \DateTime();
-        $output->writeln('<comment>End : ' . $now->format('d-m-Y G:i:s') . ' ---</comment>');
+        $output->writeln('<comment>End : '.$now->format('d-m-Y G:i:s').' ---</comment>');
 
     }
 
@@ -62,13 +61,13 @@ class ImportCommand extends ContainerAwareCommand
         $progress->start();
 
         // Processing on each row of data
-        foreach($data as $row) {
+        foreach ($data as $row) {
 
             $movie = $em->getRepository('AppBundle:Movie')
                 ->findOneBy(array('title' => $row[5]));
 
             // If the movie does not exist we create one
-            if(!is_object($movie)){
+            if (!is_object($movie)) {
                 $movie = new Movie();
                 $movie->setTitle($row[5]);
             }
@@ -79,7 +78,7 @@ class ImportCommand extends ContainerAwareCommand
 
             $type = $em->getRepository('AppBundle:Type')
                 ->findOneBy(array('name' => $row[6]));
-            if(!is_object($type)){
+            if (!is_object($type)) {
                 $type = new Type();
                 $type->setName($row[6]);
                 $em->persist($type);
@@ -90,14 +89,15 @@ class ImportCommand extends ContainerAwareCommand
 
             $genres = explode(', ', $row[12]);
             $movie->getGenres()->clear();
-            foreach($genres as $genre) {
+            foreach ($genres as $genre) {
                 $g = $em->getRepository('AppBundle:Genre')
                     ->findOneBy(array('name' => $genre));
                 if (!is_object($g)) {
                     $g = new Genre();
                     $g->setName($genre);
                     $em->persist($g);
-                    $em->flush(); // Important: without flush, object not written in DB, so not found with findOneBy, and we endup with duplicates
+                    $em->flush(
+                    ); // Important: without flush, object not written in DB, so not found with findOneBy, and we endup with duplicates
                 }
                 $movie->getGenres()->add($g);
             }
@@ -118,7 +118,7 @@ class ImportCommand extends ContainerAwareCommand
                 $progress->advance($batchSize);
 
                 $now = new \DateTime();
-                $output->writeln(' of objects imported ... | ' . $now->format('d-m-Y G:i:s'));
+                $output->writeln(' of objects imported ... | '.$now->format('d-m-Y G:i:s'));
             }
 
             $i++;
@@ -138,12 +138,12 @@ class ImportCommand extends ContainerAwareCommand
         $filename = $input->getArgument('filename');
         $logger = $this->getContainer()->get('logger');
 
-        $logger->debug('Reading ' . $filename);
+        $logger->debug('Reading '.$filename);
 
         $row = 0;
         $result = array();
-        if (($handle = fopen($filename, "r")) !== FALSE) {
-            while (($data = fgetcsv($handle, 1000, "\t")) !== FALSE) {
+        if (($handle = fopen($filename, "r")) !== false) {
+            while (($data = fgetcsv($handle, 1000, "\t")) !== false) {
                 $num = count($data);
                 $logger->debug("$num fields on line $row");
                 $result[$row] = $data;
@@ -152,7 +152,7 @@ class ImportCommand extends ContainerAwareCommand
             fclose($handle);
         }
 
-        $logger->debug('File read, nb of rows : ' . $row);
+        $logger->debug('File read, nb of rows : '.$row);
 
         return $result;
     }
