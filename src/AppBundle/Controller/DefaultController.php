@@ -25,7 +25,7 @@ class DefaultController extends Controller
         /*return $this->render('default/index.html.twig', [
             'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..'),
         ]);*/
-        $response = $this->forward('AppBundle:Default:movies', null);
+        $response = $this->forward('AppBundle:Default:movies', array('page' => 1));
 
         return $response;
     }
@@ -59,12 +59,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/movies/{page}",
-     *     defaults={"page" = 1},
-     *     name="movie_list",
-     *     requirements={
-     *     "page": "\d+"
-     * })
+     * @Route("/movies/{page}", defaults={"page": 1}, name="movie_list", requirements={"page": "\d+" })
      * @Method("GET")
      */
     public function moviesAction(Request $request, $page)
