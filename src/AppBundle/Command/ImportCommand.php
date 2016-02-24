@@ -44,7 +44,10 @@ class ImportCommand extends ContainerAwareCommand
     protected function import(InputInterface $input, OutputInterface $output)
     {
         // Getting php array of data from CSV
-        $data = $this->loadCsv($input, $output);
+        // $data = $this->loadCsv($input, $output);
+
+        $movieImporter = $this->getContainer()->get('movie_importer');
+        $data = $movieImporter->convertCSVtoArray($input->getArgument('filename'), "\t");
 
         // Getting doctrine manager
         $em = $this->getContainer()->get('doctrine')->getManager();
@@ -63,31 +66,33 @@ class ImportCommand extends ContainerAwareCommand
         // Processing on each row of data
         foreach ($data as $row) {
 
+            // $movieImporter->importCSVRow();
+
             $movie = $em->getRepository('AppBundle:Movie')
-                ->findOneBy(array('title' => $row[5]));
+                ->findOneBy(array('title' => $row['Title']));
 
             // If the movie does not exist we create one
             if (!is_object($movie)) {
                 $movie = new Movie();
-                $movie->setTitle($row[5]);
+                $movie->setTitle($row['Title']);
             }
 
             // Updating info
-            $movie->setYear($row[11]);
-            $movie->setRating($row[9]);
+            $movie->setYear($row['Year']);
+            $movie->setRating($row['IMDb Rating']);
 
             $type = $em->getRepository('AppBundle:Type')
-                ->findOneBy(array('name' => $row[6]));
+                ->findOneBy(array('name' => $row['Title type']));
             if (!is_object($type)) {
                 $type = new Type();
-                $type->setName($row[6]);
+                $type->setName($row['Title type']);
                 $em->persist($type);
                 $em->flush();
             }
             $movie->setType($type);
 
 
-            $genres = explode(', ', $row[12]);
+            $genres = explode(', ', $row['Genres']);
             $movie->getGenres()->clear();
             foreach ($genres as $genre) {
                 $g = $em->getRepository('AppBundle:Genre')
@@ -133,27 +138,4 @@ class ImportCommand extends ContainerAwareCommand
         $progress->finish();
     }
 
-    protected function loadCsv(InputInterface $input, OutputInterface $output)
-    {
-        $filename = $input->getArgument('filename');
-        $logger = $this->getContainer()->get('logger');
-
-        $logger->debug('Reading '.$filename);
-
-        $row = 0;
-        $result = array();
-        if (($handle = fopen($filename, "r")) !== false) {
-            while (($data = fgetcsv($handle, 1000, "\t")) !== false) {
-                $num = count($data);
-                $logger->debug("$num fields on line $row");
-                $result[$row] = $data;
-                $row++;
-            }
-            fclose($handle);
-        }
-
-        $logger->debug('File read, nb of rows : '.$row);
-
-        return $result;
-    }
 }
