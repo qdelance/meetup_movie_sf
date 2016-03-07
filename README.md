@@ -1,4 +1,4 @@
-meetup_sf_partners
+meetup_movie_sf
 ==================
 
 Sample project for Drupal meetup in Toulouse
@@ -8,7 +8,7 @@ Symfony project setup
 
 New command:
 
-    #symfony new project
+    symfony new project
     
 No need to use composer to download all projects.
 Much quicker.
@@ -63,10 +63,10 @@ Add link between Partner <=> Level in source
 
     php bin/console doctrine:generate:entities AppBundle/Entity/Partner
     
-Apply in DB
+In case you want to use migrations (not used currently, left as an example), apply in DB
     
-    php app/console doctrine:migrations:diff
-    php app/console doctrine:migrations:migrate
+    php bin/console doctrine:migrations:diff
+    php bin/console doctrine:migrations:migrate
     
 Creating content
 ----------------
@@ -83,3 +83,21 @@ Loading sample data
 
 Viewing content
 ----------------
+
+Use app_dev.php in case you want to use dev environment._
+
+http://host/movies
+http://host/movie/add
+http://host/movie/:id/edit
+http://host/movie/:id/view
+http://host/movie/:id/delete
+
+Importing CSV
+--------------
+
+You can use list of films exported thru IMDb.
+Note that you MUST save the CSV with TAB ("\t") as field separator, as "," is already used to split "genres".
+
+When you have the CSV file, you can import it with a console Command:
+
+    php bin/console movie:import <path_to_csv>

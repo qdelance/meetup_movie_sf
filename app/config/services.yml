@@ -10,4 +10,4 @@ services:
 
   movie_importer:
       class: AppBundle\Service\MovieImporter
-      arguments: ["@doctrine.orm.entity_manager", "@logger"]
+      arguments: ["@doctrine.orm.entity_manager", "@event_dispatcher", "@logger"]

@@ -39,7 +39,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/movie/best-results/{limit}", name="movie_delete")
+     * @Route("/movie/best-results/{limit}")
      */
     public function bestRatedAction(Request $request, $limit)
     {
