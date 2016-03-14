@@ -17,7 +17,7 @@
 
     <div class="container">
         <div id="header" class="jumbotron">
-            <h1>A Sample Application Based on Symfony Framework</h1>
+            <h1>A Sample Application Based on <strong>Symfony</strong> Framework</h1>
             <p>
                 This is a sample application written for a PHP meetup in Toulouse :)
             </p>
@@ -47,7 +47,7 @@
 
             #}
                 <h3>Best Rated Movies</h3>
-                {{ render(controller("AppBundle:Default:bestRated", {'limit': 8})) }}
+                {{ render(controller("AppBundle:Default:bestRated", {'limit': 5})) }}
 
             </div>
             <div id="content" class="col-md-9">
